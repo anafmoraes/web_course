@@ -7,7 +7,7 @@ router.post('/', controller.post);
 router.get('/', controller.get);
 router.get('/:id', controller.getById);
 
-router.get('/categories/:category', controller.getByCategory);
+router.get('/categories/:category', controller.get);
 
 router.put('/:id', controller.put);
 

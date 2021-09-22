@@ -39,6 +39,9 @@ exports.get = async (req, res) => {
         { description: { $regex: new RegExp(req.query.search, 'i') } },
       ];
     }
+    if (req.params.category) {
+      condition.category = req.params.category;
+    }
 
     const products = await repository.get(
       condition,
@@ -57,21 +60,6 @@ exports.get = async (req, res) => {
 exports.getById = async (req, res) => {
   try {
     const product = await repository.getById(req.params.id, fields);
-    if (!product) {
-      return res.status(404).send({ message: 'Produto não encontrado' }); //537eed02ed345b2e039652d2
-    }
-    return res.status(200).send(product);
-  } catch (e) {
-    return res.status(400).send({ message: 'Erro na busca', data: e });
-  }
-};
-
-exports.getByCategory = async (req, res) => {
-  try {
-    const product = await repository.get(
-      { category: req.params.category },
-      fields,
-    );
     if (!product) {
       return res.status(404).send({ message: 'Produto não encontrado' }); //537eed02ed345b2e039652d2
     }
