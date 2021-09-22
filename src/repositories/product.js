@@ -5,11 +5,11 @@ exports.get = (condition, fields) => {
   // busco apenas os produtos que estão ativos no sistema.
   // Coloco as restrições de busca dentro do {}.
   // O segundo parâmetro do find são os campos que quero trazer
-  return Product.find(condition, fields);
+  return Product.find(condition, fields).populate('category', '_id name label');
 };
 
 exports.getById = (id, fields) => {
-  return Product.findOne(id, fields);
+  return Product.findOne(id, fields).populate('category', '_id name label');
 };
 
 exports.create = async (data) => {
@@ -29,7 +29,7 @@ exports.update = async (id, data, fields) => {
       ...data,
     },
   });
-  return Product.findById(id, fields);
+  return Product.findById(id, fields).populate('category', '_id name label');
 };
 
 exports.delete = (id) => {
