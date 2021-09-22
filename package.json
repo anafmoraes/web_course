@@ -1,0 +1,25 @@
+{
+  "name": "curso_web",
+  "version": "1.0.0",
+  "description": "Curso básico de NodeJs para desenvolvimento de uma API com operações simples de CRUD para um restaurante",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node bin/server.js",
+    "start:dev": "nodemon bin/server.js"
+  },
+  "author": "Ana Luiza Moraes",
+  "license": "ISC",
+  "dependencies": {
+    "body-parser": "^1.19.0",
+    "debug": "^4.3.2",
+    "express": "^4.17.1",
+    "http": "0.0.1-security",
+    "mongoose": "^6.0.7"
+  },
+  "devDependencies": {
+    "eslint": "^7.32.0",
+    "nodemon": "^2.0.12",
+    "prettier": "^2.4.1"
+  }
+}
