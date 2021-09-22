@@ -1,11 +1,13 @@
 const mongoose = require('mongoose');
 const Product = mongoose.model('Product');
 
-exports.get = (condition, fields) => {
+exports.get = (condition, fields, limit = 10, page = 0) => {
   // busco apenas os produtos que estão ativos no sistema.
   // Coloco as restrições de busca dentro do {}.
   // O segundo parâmetro do find são os campos que quero trazer
-  return Product.find(condition, fields).populate('category', '_id name label');
+  return Product.find(condition, fields, { skip: limit * page, limit })
+    .populate('category', '_id name label')
+    .exec();
 };
 
 exports.getById = (id, fields) => {

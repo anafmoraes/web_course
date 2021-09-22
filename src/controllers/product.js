@@ -32,10 +32,15 @@ exports.post = async (req, res) => {
 
 exports.get = async (req, res) => {
   try {
-    const products = await repository.get({}, fields);
+    const products = await repository.get(
+      {},
+      fields,
+      parseInt(req.query.limit, 10) || 10,
+      parseInt(req.query.page, 10) || 0,
+    );
     res.status(200).send(products);
   } catch (e) {
-    res.status(400).send({ message: 'Erro na busca', data: e });
+    res.status(400).send({ message: 'Falha na busca', data: e });
   }
 };
 
