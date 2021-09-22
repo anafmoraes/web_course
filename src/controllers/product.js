@@ -32,7 +32,7 @@ exports.post = async (req, res) => {
 
 exports.get = async (req, res) => {
   try {
-    let condition = {};
+    const condition = {};
     if (req.query.search) {
       condition.$or = [
         { name: { $regex: new RegExp(req.query.search, 'i') } },
@@ -45,6 +45,8 @@ exports.get = async (req, res) => {
       fields,
       parseInt(req.query.limit, 10) || 10,
       parseInt(req.query.page, 10) || 0,
+      req.query.sort,
+      req.query.direction,
     );
     res.status(200).send(products);
   } catch (e) {
