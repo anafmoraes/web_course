@@ -32,8 +32,16 @@ exports.post = async (req, res) => {
 
 exports.get = async (req, res) => {
   try {
+    let condition = {};
+    if (req.query.search) {
+      condition.$or = [
+        { name: { $regex: new RegExp(req.query.search, 'i') } },
+        { description: { $regex: new RegExp(req.query.search, 'i') } },
+      ];
+    }
+
     const products = await repository.get(
-      {},
+      condition,
       fields,
       parseInt(req.query.limit, 10) || 10,
       parseInt(req.query.page, 10) || 0,
