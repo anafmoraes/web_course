@@ -1,9 +1,11 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
+const cors = require('cors');
 
 // criação da aplicação
 const app = express();
+app.use(cors());
 
 //Conecta ao banco
 mongoose.connect('uri', () => console.log('Database connected'));
