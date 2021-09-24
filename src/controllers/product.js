@@ -1,32 +1,29 @@
-const Validation = require('../validators/fluent-validator');
 const repository = require('../repositories/product');
 
 const fields =
   'name _id description price category count_serves is_available is_on_sale image sale_price';
 
+const validateBody = (body) => {
+  if (!body.description || body.description.length > 200) {
+    throw new Error('A descrição do produto deve ter no máximo 200 caracteres');
+  }
+
+  if (!body.price || body.price <= 0) {
+    throw new Error('O valor do produto deve ser maior que zero');
+  }
+};
+
 exports.post = async (req, res) => {
   try {
     // se quiser especificar os parâmetros de entrada, melhor não passar o body completo no construtor do Schema
     // product.name = req.body.name;
-    const validator = new Validation();
-    validator.hasMaxLen(
-      req.body.description,
-      200,
-      'A descrição do produto deve ter no máximo 200 caracteres',
-    );
-    validator.isGreaterThan(
-      req.body.price,
-      0,
-      'O valor do produto deve ser maior que zero',
-    );
-    if (!validator.isValid()) {
-      return res.status(400).send(validator.errors()).end();
-    }
-
+    validateBody(req.body);
     await repository.create(req.body);
     res.status(201).send({ message: 'Produto cadastrado' });
   } catch (e) {
-    res.status(400).send({ message: 'Produto não cadastrado', data: e });
+    res
+      .status(400)
+      .send({ message: 'Produto não cadastrado', data: e.message });
   }
 };
 
@@ -53,7 +50,7 @@ exports.get = async (req, res) => {
     );
     res.status(200).send(products);
   } catch (e) {
-    res.status(400).send({ message: 'Falha na busca', data: e });
+    res.status(400).send({ message: 'Falha na busca', data: e.message });
   }
 };
 
@@ -65,16 +62,18 @@ exports.getById = async (req, res) => {
     }
     return res.status(200).send(product);
   } catch (e) {
-    return res.status(400).send({ message: 'Erro na busca', data: e });
+    return res.status(400).send({ message: 'Erro na busca', data: e.message });
   }
 };
 
 exports.put = async (req, res) => {
   try {
-    const product = await repository.update(req.params.id, req.body);
+    const product = await repository.update(req.params.id, req.body, fields);
     res.status(200).send(product);
   } catch (e) {
-    res.status(400).send({ message: 'Produto não atualizado', data: e });
+    res
+      .status(400)
+      .send({ message: 'Produto não atualizado', data: e.message });
   }
 };
 
@@ -83,6 +82,8 @@ exports.delete = async (req, res) => {
     await repository.delete(req.params.id);
     res.status(200).send({ message: 'Produto excluído com sucesso' });
   } catch (e) {
-    res.status(400).send({ message: 'Falha ao remover o produto', data: e });
+    res
+      .status(400)
+      .send({ message: 'Falha ao remover o produto', data: e.message });
   }
 };

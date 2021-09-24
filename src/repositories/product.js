@@ -19,7 +19,7 @@ exports.get = (
 };
 
 exports.getById = (id, fields) => {
-  return Product.findOne(id, fields).populate('category', '_id name label');
+  return Product.findById(id, fields).populate('category', '_id name label');
 };
 
 exports.create = async (data) => {
